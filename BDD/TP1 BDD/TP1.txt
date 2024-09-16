@@ -1,0 +1,27 @@
+Livre (noLivre* , typeLivre , titre , prix NN , prix NN, nomEditeur**)
+
+Auteur ( NoAuteur* , nomAuteur , prenomAuteur , emailAuteur NN UQ)
+
+aEcrit ( (noLivre** , noAuteur**)* )
+
+Editeur ( nomEditeur* , adresse NN)
+
+aUnContratChez ( ( noAuteur** , nomEditeur** )* ) 
+
+Exemplaire ( noExemplaire* , dateAchat NN, noLivre** , noClient**)
+
+Client ( noClient* , nomClient , prenomClient , emailClient NN UQ)
+
+
+contraintes restantes : 
+la date d'achat est par défaut la date du jour
+le type d'un livre est soit BD soit POCHE
+le prix d'un livre ne doit pas pouvoir etre augmenté de plus de 10%
+un auteur ne peut pas porter le même nom que son éditeur
+Un livre écrit par un auteur ne peut être édité que par un éditeur chez qui l’auteur a un contrat.
+
+
+POUR LA SUITE :
+Créer des éléments dans les tables aEcrit et aUnContratChez pour tester, puis faire le reste apres
+
+
