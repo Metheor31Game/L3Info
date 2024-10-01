@@ -56,19 +56,19 @@ public class DES {
   public String bitsToString(ArrayList<Integer> message_code) {
     StringBuilder message_clair = new StringBuilder();
     String parts = "";
-    for (int i = 0; i < message_code.size(); i++){
-        parts = parts + message_code.get(i);
-        if (i % 8 == 7 || i == message_code.size() - 1) {
-            while (parts.length() < 8) {
-                parts = "0" + parts;
-            }
-            int charCode = Integer.parseInt(parts, 2);
-            message_clair.append((char) charCode);
-            parts = "";
+    for (int i = 0; i < message_code.size(); i++) {
+      parts = parts + message_code.get(i);
+      if (i % 8 == 7 || i == message_code.size() - 1) {
+        while (parts.length() < 8) {
+          parts = "0" + parts;
         }
+        int charCode = Integer.parseInt(parts, 2);
+        message_clair.append((char) charCode);
+        parts = "";
+      }
     }
     return message_clair.toString();
-}
+  }
 
   public ArrayList<Integer> genereMasterKey() {
     DES.masterKey.clear();
@@ -85,28 +85,41 @@ public class DES {
     }
     return res;
   }
-  
-  public ArrayList<Integer> permutation(int[] tab_permuation, ArrayList<Integer> bloc){
+
+  public ArrayList<Integer> permutation(int[] tab_permuation, ArrayList<Integer> bloc) {
     ArrayList<Integer> bloc_perm = new ArrayList<>();
-    for (int i = 0; i < 64; i++){
+    for (int i = 0; i < 64; i++) {
       bloc_perm.add(0);
     }
-    for (int i = 0; i < tab_permuation.length; i++){
-      int nouvelle_place = tab_permuation[i]; 
-      bloc_perm.set(i,bloc.get(nouvelle_place-1));
+    for (int i = 0; i < tab_permuation.length; i++) {
+      int nouvelle_place = tab_permuation[i];
+      bloc_perm.set(i, bloc.get(nouvelle_place - 1));
     }
     return bloc_perm;
   }
 
-  public ArrayList<Integer> inv_permutation(int[] tab_permuation, ArrayList<Integer> bloc){
+  public ArrayList<Integer> inv_permutation(int[] tab_permuation, ArrayList<Integer> bloc) {
     ArrayList<Integer> bloc_perm = new ArrayList<>();
-    for (int i = 0; i < 64; i++){
+    for (int i = 0; i < 64; i++) {
       bloc_perm.add(0);
     }
     for (int i = 0; i < tab_permuation.length; i++) {
-      bloc_perm.set(i, bloc.get(tab_permuation[i]-1));
+      bloc_perm.set(i, bloc.get(tab_permuation[i] - 1));
     }
     return bloc_perm;
+  }
+
+  public ArrayList<ArrayList<Integer>> decoupage(ArrayList<Integer> bloc, int taille_sous_bloc) {
+    ArrayList<ArrayList<Integer>> blocs = new ArrayList<>();
+    for (int i = 0; i < bloc.size(); i += taille_sous_bloc) {
+      ArrayList<Integer> sous_bloc = new ArrayList<>();
+      for (int j = 0; j < taille_sous_bloc; j++) {
+        sous_bloc.add(bloc.get(i + j));
+      }
+      blocs.add(sous_bloc);
+    }
+
+    return blocs;
   }
 
   public static void main(String[] args) {
@@ -118,7 +131,7 @@ public class DES {
     // System.out.println(message_clair);
     // System.out.println(message_code);
     // System.out.println(des.bitsToString(message_code));
-    
+
   }
 
 }
