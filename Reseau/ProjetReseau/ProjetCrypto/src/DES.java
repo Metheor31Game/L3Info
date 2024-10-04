@@ -41,6 +41,7 @@ public class DES {
 
   }
 
+  // Faire attention de remplir de 0 si le machin n'atteint pas un multiple de 64
   public ArrayList<Integer> stringToBits(String message_clair) {
     ArrayList<Integer> message_code = new ArrayList<>();
     for (int i = 0; i < message_clair.length(); i++) {
@@ -76,14 +77,6 @@ public class DES {
       DES.masterKey.add(new Random().nextInt(2));
     }
     return DES.masterKey;
-  }
-
-  public ArrayList<Integer> xor(ArrayList<Integer> a, ArrayList<Integer> b) {
-    ArrayList<Integer> res = new ArrayList<>();
-    for (int i = 0; i < a.size(); i++) {
-      res.add(a.get(i) ^ b.get(i));
-    }
-    return res;
   }
 
   public ArrayList<Integer> permutation(int[] tab_permuation, ArrayList<Integer> bloc) {
@@ -122,6 +115,33 @@ public class DES {
     return blocs;
   }
 
+  public ArrayList<Integer> recollage(ArrayList<ArrayList<Integer>> blocs) {
+    ArrayList<Integer> nouveau_bloc = new ArrayList<>();
+    for (ArrayList<Integer> bloc : blocs) {
+      for (int element : bloc) {
+        nouveau_bloc.add(element);
+      }
+    }
+    return nouveau_bloc;
+  }
+
+  public ArrayList<Integer> decallage_gauche(ArrayList<Integer> minicle) {
+    ArrayList<Integer> nouvMiniCle = new ArrayList<>();
+    for (int i = 1; i < minicle.size(); i++) { // Commence à l'indice 1 pour ignorer le premier élément
+      nouvMiniCle.add(minicle.get(i));
+    }
+    nouvMiniCle.add(0); // Ajoute un 0 à la fin
+    return nouvMiniCle;
+  }
+
+  public ArrayList<Integer> xor(ArrayList<Integer> a, ArrayList<Integer> b) {
+    ArrayList<Integer> res = new ArrayList<>();
+    for (int i = 0; i < a.size(); i++) {
+      res.add(a.get(i) ^ b.get(i));
+    }
+    return res;
+  }
+
   public static void main(String[] args) {
     DES des = new DES();
     des.genereMasterKey();
@@ -131,7 +151,7 @@ public class DES {
     // System.out.println(message_clair);
     // System.out.println(message_code);
     // System.out.println(des.bitsToString(message_code));
-
+    System.out.println(DES.perm_initiale.length);
   }
 
 }
