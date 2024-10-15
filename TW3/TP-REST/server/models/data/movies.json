@@ -1,0 +1,240 @@
+[
+  {
+    "id": "2",
+    "title": "La La Land",
+    "summary": "L'histoire d'amour entre un musicien de jazz passionné et une aspirante actrice à Los Angeles, alors qu'ils poursuivent leurs rêves et affrontent les défis de la vie.",
+    "year": 2016,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg"
+  },
+  {
+    "id": "4",
+    "title": "Pulp Fiction",
+    "summary": "Des histoires entrelacées de criminels de Los Angeles, de petits truands à la recherche d'un mystérieux portefeuille, de boxeurs, de gangsters et de deux tueurs à gages.",
+    "year": 1994,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg"
+  },
+  {
+    "id": "5",
+    "title": "Titanic",
+    "summary": "L'histoire épique et romantique du naufrage du Titanic, mettant en vedette deux amants issus de milieux sociaux différents qui luttent pour rester ensemble pendant le tragique événement.",
+    "year": 1997,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg"
+  },
+  {
+    "id": "6",
+    "title": "Le Seigneur des Anneaux : La Communauté de l'Anneau",
+    "summary": "Frodo Baggins, un hobbit, entreprend un voyage pour détruire un anneau puissant et sauver le monde du Seigneur des Ténèbres, Sauron.",
+    "year": 2001,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg"
+  },
+  {
+    "id": "7",
+    "title": "Fight Club",
+    "summary": "Un employé de bureau désillusionné et un soapmaker excentrique forment un club secret où les hommes peuvent se battre pour libérer leur agression refoulée.",
+    "year": 1999,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg"
+  },
+  {
+    "id": "8",
+    "title": "Interstellar",
+    "summary": "Un groupe d'explorateurs voyage à travers un trou de ver nouvellement découvert pour surpasser les limites du voyage spatial humain et sauver une Terre mourante.",
+    "year": 2014,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+  },
+  {
+    "id": "9",
+    "title": "Le Roi Lion",
+    "summary": "Simba, un jeune lionceau, doit apprendre à être le roi de la Terre des Lions après que son père Mufasa ait été injustement tué par son oncle Scar.",
+    "year": 1994,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/6aug5wHVNzHgjNRA1dUrD6fmFrj.jpg"
+  },
+  {
+    "id": "10",
+    "title": "The Dark Knight",
+    "summary": "L'homme chauve-souris, Batman, s'allie avec le procureur et le lieutenant de Gotham pour tenter de neutraliser le Joker, un criminel psychotique qui plonge la ville dans le chaos.",
+    "year": 2008,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+  },
+  {
+    "id": "11",
+    "title": "Blade Runner",
+    "summary": "Dans un futur dystopique, un détective traque des androïdes rebelles appelés 'Réplicants'.",
+    "year": 1982,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg"
+  },
+  {
+    "id": "12",
+    "title": "Le Fabuleux Destin d'Amélie Poulain",
+    "summary": "Amélie, une jeune serveuse, se lance dans une quête pour apporter le bonheur aux gens autour d'elle.",
+    "year": 2001,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/nSxDa3M9aMvGVLoItzWTepQ5h5d.jpg"
+  },
+  {
+    "id": "13",
+    "title": "Forrest Gump",
+    "summary": "La vie extraordinaire de Forrest Gump, un homme avec un QI inférieur à la moyenne, mais qui a vécu une vie incroyablement riche et influencé de manière unique chaque personne qu'il a rencontrée.",
+    "year": 1994,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg"
+  },
+  {
+    "id": "14",
+    "title": "Matrix",
+    "summary": "Un programmeur découvre la vérité sur sa réalité et doit se battre contre des machines intelligentes qui contrôlent l'humanité.",
+    "year": 1999,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/AfFD10ZqEx2vkxM2yvRZkybsGB7.jpg"
+  },
+  {
+    "id": "15",
+    "title": "Jurassic Park",
+    "summary": "Des scientifiques visitent un parc d'attractions peuplé de dinosaures génétiquement modifiés et doivent survivre lorsque les créatures s'échappent.",
+    "year": 1993,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg"
+  },
+  {
+    "id": "16",
+    "title": "Eternal Sunshine of the Spotless Mind",
+    "summary": "Joel Barish et Clementine Kruczynski, qui ont connu une histoire d'amour tumultueuse, décident de faire effacer mutuellement leurs souvenirs de l'autre.",
+    "year": 2004,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg"
+  },
+  {
+    "id": "17",
+    "title": "The Shawshank Redemption",
+    "summary": "Un banquier condamné à tort se lie d'amitié avec un détenu vétéran alors qu'ils endurent les épreuves de la prison de Shawshank.",
+    "year": 1994,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg"
+  },
+  {
+    "id": "18",
+    "title": "Les Évadés",
+    "summary": "Deux prisonniers forment une amitié improbable alors qu'ils planifient leur évasion d'une prison de haute sécurité.",
+    "year": 1994,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/k8MMlzCndMhuWa7GnY9NMd03x55.jpg"
+  },
+  {
+    "id": "19",
+    "title": "Avengers: Endgame",
+    "summary": "Les super-héros survivants s'unissent pour vaincre Thanos et ramener à la vie les victimes de son claquement de doigts.",
+    "year": 2019,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
+  },
+  {
+    "id": "20",
+    "title": "Les Indestructibles",
+    "summary": "Une famille de super-héros lutte contre un ennemi qui menace de détruire la paix dans le monde.",
+    "year": 2004,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/iwsMu0ehRPbtaSxqiaUDQB9qMWT.jpg"
+  },
+  {
+    "id": "21",
+    "title": "The Godfather: Part II",
+    "summary": "Le Parrain, partie II, explore l'histoire de Vito Corleone et de son fils Michael, à la fois en tant que jeune homme cherchant le pouvoir et en tant que parrain de la mafia.",
+    "year": 1974,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg"
+  },
+  {
+    "id": "22",
+    "title": "Retour vers le futur",
+    "summary": "Marty McFly, un adolescent, est accidentellement envoyé dans le passé où il rencontre ses parents et doit s'assurer qu'ils tombent amoureux pour sauver son existence future.",
+    "year": 1985,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/fNOH9f1aA7XRTzl1sAOx9iF553Q.jpg"
+  },
+  {
+    "id": "23",
+    "title": "The Matrix Reloaded",
+    "summary": "Neo doit choisir entre sauver Zion et défier la Matrice alors que les machines intensifient leur attaque contre l'humanité.",
+    "year": 2003,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/9TGHDvWrqKBzwDxDodHYXEmOE6J.jpg"
+  },
+  {
+    "id": "24",
+    "title": "The Matrix Revolutions",
+    "summary": "La conclusion épique de la trilogie Matrix alors que Neo se bat pour sauver Zion et mettre fin à la guerre entre les humains et les machines.",
+    "year": 2003,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/qEWiBXJGXK28jGBAm8oFKKTB0WD.jpg"
+  },
+  {
+    "id": "25",
+    "title": "La Planète des Singes : Les Origines",
+    "summary": "Un scientifique travaillant sur un remède contre la maladie d'Alzheimer découvre que son traitement a des effets secondaires inattendus qui conduisent à l'évolution des singes.",
+    "year": 2011,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/cjLsuP75UDlRdJVMXzXg3TJ4umX.jpg"
+  },
+  {
+    "id": "26",
+    "title": "La Planète des Singes : L'Affrontement",
+    "summary": "Les singes évolués, dirigés par César, entrent en conflit avec les humains survivants alors qu'ils cherchent un nouvel équilibre sur Terre.",
+    "year": 2014,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/kScdQEwS9jPEdnO23XjGAtaoRcT.jpg"
+  },
+  {
+    "id": "27",
+    "title": "La Planète des Singes : Suprématie",
+    "summary": "César et les singes sont forcés dans un conflit mortel avec une armée humaine impitoyable, mettant en jeu l'avenir de chaque espèce.",
+    "year": 2017,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/pbPwGTyiH5TjoTtarY5gM0z56kQ.jpg"
+  },
+  {
+    "id": "28",
+    "title": "Gravity",
+    "summary": "Deux astronautes se retrouvent en dérive dans l'espace après la destruction de leur navette spatiale, luttant pour survivre avec des réserves limitées d'oxygène.",
+    "year": 2013,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/kZ2nZw8D681aphje8NJi8EfbL1U.jpg"
+  },
+  {
+    "id": "29",
+    "title": "The Revenant",
+    "summary": "Un trappeur est laissé pour mort et doit survivre dans le désert impitoyable pour se venger de ceux qui l'ont trahi.",
+    "year": 2015,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/ji3ecJphATlVgWNY0B0RVXZizdf.jpg"
+  },
+  {
+    "id": "30",
+    "title": "Django Unchained",
+    "summary": "Un chasseur de primes allemand aide un esclave affranchi à traquer et à libérer sa femme d'un propriétaire brutal du Sud des États-Unis.",
+    "year": 2012,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/7oWY8VDWW7thTzWh3OKYRkWUlD5.jpg"
+  },
+  {
+    "id": "32",
+    "title": "The Silence of the Lambs",
+    "summary": "Une jeune stagiaire du FBI doit faire équipe avec un psychopathe cannibale pour attraper un autre tueur en série.",
+    "year": 1991,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg"
+  },
+  {
+    "id": "33",
+    "title": "The Prestige",
+    "summary": "Deux magiciens rivaux cherchent à créer le tour ultime tout en se battant pour la reconnaissance et la gloire.",
+    "year": 2006,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/tRNlZbgNCNOpLpbPEz5L8G8A0JN.jpg"
+  },
+  {
+    "id": "34",
+    "title": "The Social Network",
+    "summary": "L'histoire de la création de Facebook et de la bataille juridique qui a suivi entre son fondateur, Mark Zuckerberg, et ses anciens amis et partenaires.",
+    "year": 2010,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/n0ybibhJtQ5icDqTp8eRytcIHJx.jpg"
+  },
+  {
+    "id": "35",
+    "title": "Inception",
+    "summary": "Dom Cobb, voleur d'élite, est capable d'entrer dans les rêves des autres. Il est chargé de réaliser l'inverse : implanter une idée dans l'esprit d'un individu.",
+    "year": 2010,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg"
+  },
+  {
+    "id": "38",
+    "title": "Le Seigneur des Anneaux : Les Deux Tours",
+    "summary": "Alors que Frodo et Sam s'approchent de Mordor avec l'aide de l'étrange Gollum, le reste de la compagnie de la Communauté se bat pour sauver Gondor du Seigneur des Ténèbres Sauron.",
+    "year": 2002,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/5VTN0pR8gcqV3EPUHHfMGnJYN9L.jpg"
+  },
+  {
+    "id": "39",
+    "title": "Le Seigneur des Anneaux : Le Retour du Roi",
+    "summary": "Gandalf et Aragorn mènent le monde des hommes contre l'armée de Sauron pour attirer son regard de Frodon et Sam alors qu'ils s'approchent du Mont Doom avec l'Anneau Unique.",
+    "year": 2003,
+    "posterUrl": "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg"
+  }
+]
