@@ -23,7 +23,22 @@ public class DES {
       34, 2, 42, 10, 50, 18, 58, 26,
       33, 1, 41, 9, 49, 17, 57, 25 };
 
-  static int PC1, PC2;
+  static int[] PC1 = { 57, 49, 41, 33, 25, 17, 9,
+      1, 58, 50, 42, 34, 26, 18,
+      10, 2, 59, 51, 43, 35, 27,
+      19, 11, 3, 60, 52, 44, 36,
+      63, 55, 47, 39, 31, 23, 15,
+      7, 62, 54, 46, 38, 30, 22,
+      14, 6, 61, 53, 45, 37, 29,
+      21, 13, 5, 28, 20, 12, 4 };
+
+  static int[] PC2 = { 14, 17, 11, 24, 1, 5, 3, 28,
+      15, 6, 21, 10, 23, 19, 12, 4,
+      26, 8, 16, 7, 27, 20, 13, 2,
+      41, 52, 31, 37, 47, 55, 30, 40,
+      51, 45, 33, 48, 44, 49, 39, 56,
+      34, 53, 46, 42, 50, 36, 29, 32 };
+
   static public int[] S = { 16, 7, 20, 21, 29, 12, 28, 17,
       1, 15, 23, 26, 5, 18, 31, 10,
       2, 8, 24, 14, 32, 27, 3, 9,
@@ -81,12 +96,9 @@ public class DES {
 
   public ArrayList<Integer> permutation(int[] tab_permuation, ArrayList<Integer> bloc) {
     ArrayList<Integer> bloc_perm = new ArrayList<>();
-    for (int i = 0; i < 64; i++) {
-      bloc_perm.add(0);
-    }
     for (int i = 0; i < tab_permuation.length; i++) {
-      int nouvelle_place = tab_permuation[i];
-      bloc_perm.set(i, bloc.get(nouvelle_place - 1));
+      int nouvel_element = bloc.get(tab_permuation[i] - 1);
+      bloc_perm.add(nouvel_element);
     }
     return bloc_perm;
   }
@@ -106,12 +118,11 @@ public class DES {
     ArrayList<ArrayList<Integer>> blocs = new ArrayList<>();
     for (int i = 0; i < bloc.size(); i += taille_sous_bloc) {
       ArrayList<Integer> sous_bloc = new ArrayList<>();
-      for (int j = 0; j < taille_sous_bloc; j++) {
+      for (int j = 0; j < taille_sous_bloc && (i + j) < bloc.size(); j++) {
         sous_bloc.add(bloc.get(i + j));
       }
       blocs.add(sous_bloc);
     }
-
     return blocs;
   }
 
@@ -125,7 +136,7 @@ public class DES {
     return nouveau_bloc;
   }
 
-  public ArrayList<Integer> decallage_gauche(ArrayList<Integer> minicle) {
+  public ArrayList<Integer> decallage_gauche1(ArrayList<Integer> minicle) {
     ArrayList<Integer> nouvMiniCle = new ArrayList<>();
     for (int i = 1; i < minicle.size(); i++) { // Commence à l'indice 1 pour ignorer le premier élément
       nouvMiniCle.add(minicle.get(i));
@@ -134,12 +145,34 @@ public class DES {
     return nouvMiniCle;
   }
 
+  public ArrayList<Integer> decallage_gauche(ArrayList<Integer> minicle, int nb_cran) {
+    ArrayList<Integer> drapeau = new ArrayList<>();
+    for (int i = 0; i < nb_cran; i++) {
+      drapeau = decallage_gauche1(minicle);
+      minicle = drapeau;
+    }
+    return minicle;
+  }
+
   public ArrayList<Integer> xor(ArrayList<Integer> a, ArrayList<Integer> b) {
     ArrayList<Integer> res = new ArrayList<>();
     for (int i = 0; i < a.size(); i++) {
       res.add(a.get(i) ^ b.get(i));
     }
     return res;
+  }
+
+  public void genereCle(int n) {
+    ArrayList<Integer> cle = DES.masterKey;
+    ArrayList<Integer> cle_perm = permutation(DES.PC1, cle);
+    ArrayList<ArrayList<Integer>> blocs = decoupage(cle_perm, 28);
+    ArrayList<ArrayList<Integer>> blocs2 = new ArrayList<>();
+    for (ArrayList<Integer> bloc : blocs) {
+      blocs2.add(decallage_gauche(bloc, n));
+    }
+    ArrayList<Integer> blocRecolles = recollage(blocs2);
+    ArrayList<Integer> cle_i = permutation(PC2, blocRecolles);
+    DES.tab_cles.add(cle_i);
   }
 
   public static void main(String[] args) {

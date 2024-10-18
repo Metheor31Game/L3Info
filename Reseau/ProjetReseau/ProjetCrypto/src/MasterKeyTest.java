@@ -24,7 +24,6 @@ public class MasterKeyTest {
             cles.add(DES.masterKey);
         }
         for (ArrayList<Integer> cle : cles) {
-            System.out.println(cles);
             assertEquals(64, cle.size());
         }
 
@@ -64,17 +63,14 @@ public class MasterKeyTest {
     @Test
     public void testDecallage() {
         DES des = new DES();
-        ArrayList<Integer> minicle = new ArrayList<>();
-        for (int i = 0; i < 28; i++) {
-            minicle.add(i);
-        }
-        ArrayList<Integer> minicle2 = des.decallage_gauche(minicle);
-        ArrayList<Integer> verid = new ArrayList<>();
-        for (int i = 1; i < 28; i++) {
-            verid.add(i);
-        }
-        verid.add(0);
-        assertEquals(verid, minicle2);
+        ArrayList<Integer> minicle = new ArrayList<>(Arrays.asList(1, 0, 0, 1));
+        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(0, 0, 1, 0));
+        assertEquals(expected, des.decallage_gauche(minicle,1));
+        minicle = new ArrayList<>(Arrays.asList(0, 1, 1, 1));
+        expected = new ArrayList<>(Arrays.asList(1, 1, 0, 0));
+        assertEquals(expected, des.decallage_gauche(minicle,2));
+
+
     }
 
     @Test
@@ -88,6 +84,18 @@ public class MasterKeyTest {
         ArrayList<Integer> result = des.xor(a, b);
 
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGenereCle() {
+        DES des = new DES();
+        des.genereMasterKey();
+        for (int i = 0; i < 10; i++) {
+            des.genereCle(i);
+        }
+        for (int i = 0; i < 10; i++) {
+            System.out.println(+ i + " taille : " + DES.tab_cles.get(i).size() + "" + DES.tab_cles.get(i));
+        }
     }
 
 }
