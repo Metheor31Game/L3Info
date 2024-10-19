@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -65,11 +66,10 @@ public class MasterKeyTest {
         DES des = new DES();
         ArrayList<Integer> minicle = new ArrayList<>(Arrays.asList(1, 0, 0, 1));
         ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(0, 0, 1, 0));
-        assertEquals(expected, des.decallage_gauche(minicle,1));
+        assertEquals(expected, des.decallage_gauche(minicle, 1));
         minicle = new ArrayList<>(Arrays.asList(0, 1, 1, 1));
         expected = new ArrayList<>(Arrays.asList(1, 1, 0, 0));
-        assertEquals(expected, des.decallage_gauche(minicle,2));
-
+        assertEquals(expected, des.decallage_gauche(minicle, 2));
 
     }
 
@@ -94,8 +94,21 @@ public class MasterKeyTest {
             des.genereCle(i);
         }
         for (int i = 0; i < 10; i++) {
-            System.out.println(+ i + " taille : " + DES.tab_cles.get(i).size() + "" + DES.tab_cles.get(i));
+            System.out.println(+i + " taille : " + DES.tab_cles.get(i).size() + "" + DES.tab_cles.get(i));
         }
+    }
+
+    @Test
+    public void testFonction_S() {
+        DES des = new DES();
+        int[] bloc = { 1, 0, 1, 1, 0, 0 };
+        int[] expected = { 0, 0, 1, 0 };
+        System.out.println(Arrays.toString(des.fonction_S(bloc)));
+        System.out.println(Arrays.toString(expected));
+        assertArrayEquals(expected, des.fonction_S(bloc));
+        DES.rondeActuelle = 1;
+        expected = new int[] { 1, 1, 1, 1 };
+
     }
 
 }
