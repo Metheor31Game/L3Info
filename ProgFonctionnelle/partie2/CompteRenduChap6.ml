@@ -56,6 +56,7 @@ let rec rangImpair = function
 [a] -> [] |
 a::b::q -> b::rangImpair(q);;
 
+(* EXERCICE 3 *)
 
 let rec appartient = function
 a,[] -> false |
@@ -66,5 +67,44 @@ let rec maximum = function
 [a;b] -> if a > b then a else b |
 a::b::q -> if a > b then max(a::q) else max(b::q);;
 
+let rec occurence = function 
+a, [] -> 0 |
+a, b::q -> if a = b then 1 + occurence (a,q) else occurence (a,q);;
 
-zizi;;
+
+(* J'ai oublié de push mais je me suis arrêté a l'exercice 6*)
+
+let rec estCroissante = function
+[] -> false |
+[a] -> true |
+[a;b] -> a < b |
+a::b::q -> a < b && estCroissante(b::q);;
+
+let rec fusion = function 
+[],q -> q |
+l,[] -> l |
+a::l,b::q -> if a < b then a::fusion(l,b::q) else b::fusion(a::l,q);;
+
+
+(* Exercice 7 *)
+
+let rec generer = function
+2 -> [2] |
+n -> generer(n-1) @ [n];;
+
+let rec eliminer = function
+a,[] -> [] |
+a,b::q -> if b mod a = 0 then eliminer(a,q) else b::eliminer(a,q);;
+
+let rec eratos n =
+  let rec f2 = function
+     [] -> [] | 
+    p::q -> p :: f2 (eliminer(p, q))
+  in
+  f2 (generer n);;
+
+
+let rec jumeaux = function 
+[] -> [] |
+[a] -> [] |
+a::b::q -> if a - b = 2 then (a;b)::jumeaux(b::q) else jumeaux(b::q);;
