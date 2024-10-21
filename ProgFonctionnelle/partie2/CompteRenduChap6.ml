@@ -65,3 +65,6 @@ let rec maximum = function
 [a] ->  a |
 [a;b] -> if a > b then a else b |
 a::b::q -> if a > b then max(a::q) else max(b::q);;
+
+
+zizi;;
