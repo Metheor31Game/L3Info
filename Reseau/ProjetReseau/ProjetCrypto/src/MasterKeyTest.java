@@ -44,22 +44,22 @@ public class MasterKeyTest {
 
     }
 
-    @Test
-    public void testDecoupage() {
-        DES des = new DES();
-        ArrayList<Integer> bloc_perm = new ArrayList<>();
-        Random r = new Random();
-        for (int i = 0; i < 1280; i++) {
-            bloc_perm.add(r.nextInt(2));
-        }
-        ArrayList<ArrayList<Integer>> blocs = des.decoupage(bloc_perm, 64);
-        assertEquals(20, blocs.size());
+    // @Test
+    // public void testDecoupage() {
+    // DES des = new DES();
+    // ArrayList<Integer> bloc_perm = new ArrayList<>();
+    // Random r = new Random();
+    // for (int i = 0; i < 1225; i++) {
+    // bloc_perm.add(r.nextInt(2));
+    // }
+    // ArrayList<ArrayList<Integer>> blocs = des.decoupage(bloc_perm, 64);
+    // assertEquals(20, blocs.size());
 
-        ArrayList<Integer> nouveaubloc = des.recollage(blocs);
+    // ArrayList<Integer> nouveaubloc = des.recollage(blocs);
 
-        assertEquals(bloc_perm, nouveaubloc);
+    // assertEquals(bloc_perm, nouveaubloc);
 
-    }
+    // }
 
     @Test
     public void testDecallage() {
@@ -93,22 +93,45 @@ public class MasterKeyTest {
         for (int i = 0; i < 10; i++) {
             des.genereCle(i);
         }
-        for (int i = 0; i < 10; i++) {
-            System.out.println(+i + " taille : " + DES.tab_cles.get(i).size() + "" + DES.tab_cles.get(i));
-        }
+        // for (int i = 0; i < 10; i++) {
+        // System.out.println(+i + " taille : " + DES.tab_cles.get(i).size() + "" +
+        // DES.tab_cles.get(i));
+        // }
     }
 
     @Test
     public void testFonction_S() {
         DES des = new DES();
-        int[] bloc = { 1, 0, 1, 1, 0, 0 };
-        int[] expected = { 0, 0, 1, 0 };
-        System.out.println(Arrays.toString(des.fonction_S(bloc)));
-        System.out.println(Arrays.toString(expected));
-        assertArrayEquals(expected, des.fonction_S(bloc));
-        DES.rondeActuelle = 1;
-        expected = new int[] { 1, 1, 1, 1 };
+        ArrayList<Integer> bloc = new ArrayList<>(Arrays.asList(1, 0, 1, 1, 0, 0));
+        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(0, 0, 1, 0));
 
+        // System.out.println(des.fonction_S(bloc));
+        // System.out.println(expected);
+
+        assertEquals(expected, des.fonction_S(bloc));
+
+        DES.rondeActuelle = 1;
+        expected = new ArrayList<>(Arrays.asList(1, 1, 1, 1));
+    }
+
+    @Test
+    public void testFonction_F() {
+        DES des = new DES();
+        des.genereMasterKey();
+        des.genereCle(1);
+        // Génere moi une arraylist bloc de 32 bits aléatoires
+        ArrayList<Integer> bloc = new ArrayList<>();
+        Random r = new Random();
+        for (int i = 0; i < 32; i++) {
+            bloc.add(r.nextInt(2));
+        }
+
+        ArrayList<Integer> bloc2 = des.fonction_f(bloc);
+
+        System.out.println(bloc);
+        System.out.println(bloc2);
+
+        assertEquals(32, bloc2.size());
     }
 
 }

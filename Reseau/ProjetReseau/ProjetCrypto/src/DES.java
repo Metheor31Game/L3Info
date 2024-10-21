@@ -16,7 +16,7 @@ public class DES {
 
   static int[] PC2;
 
-  static public int[] S;
+  static public int[] P;
 
   static public int[] E;
 
@@ -33,7 +33,7 @@ public class DES {
     DES.perm_initiale_inv = t.getPermInitialeInv();
     DES.PC1 = t.getPC1();
     DES.PC2 = t.getPC2();
-    DES.S = t.getS();
+    DES.P = t.getP();
     DES.E = t.getE();
     DES.Stab = t.getStab();
 
@@ -104,6 +104,10 @@ public class DES {
       for (int j = 0; j < taille_sous_bloc && (i + j) < bloc.size(); j++) {
         sous_bloc.add(bloc.get(i + j));
       }
+      // Compléter le sous-bloc avec des zéros si nécessaire
+      while (sous_bloc.size() < taille_sous_bloc) {
+        sous_bloc.add(0);
+      }
       blocs.add(sous_bloc);
     }
     return blocs;
@@ -158,29 +162,68 @@ public class DES {
     DES.tab_cles.add(cle_i);
   }
 
-  public int[] fonction_S(int[] tableau) {
-    int[] tab_res = new int[4];
-    int ligne = tableau[0] * 2 + tableau[5];
-    int colonne = tableau[1] * 8 + tableau[2] * 4 + tableau[3] * 2 + tableau[4];
+  public ArrayList<Integer> fonction_S(ArrayList<Integer> tableau) {
+    ArrayList<Integer> tab_res = new ArrayList<>(4);
+    for (int i = 0; i < 4; i++) {
+      tab_res.add(0); // Initialiser avec des zéros
+    }
+
+    int ligne = tableau.get(0) * 2 + tableau.get(5);
+    int colonne = tableau.get(1) * 8 + tableau.get(2) * 4 + tableau.get(3) * 2 + tableau.get(4);
     int valeur = DES.Stab[DES.rondeActuelle][ligne * 16 + colonne];
     String binary_valeur = String.format("%4s", Integer.toBinaryString(valeur)).replace(' ', '0');
+
     for (int i = 0; i < binary_valeur.length(); i++) {
-      tab_res[i] = Integer.parseInt(String.valueOf(binary_valeur.charAt(i)));
+      tab_res.set(i, Integer.parseInt(String.valueOf(binary_valeur.charAt(i))));
     }
 
     return tab_res;
   }
 
+  public ArrayList<Integer> fonction_f(ArrayList<Integer> bloc) {
+    ArrayList<Integer> bloc_perm = permutation(DES.E, bloc);
+    ArrayList<Integer> bloc_xor = xor(bloc_perm, DES.tab_cles.get(DES.rondeActuelle));
+    ArrayList<ArrayList<Integer>> blocs = decoupage(bloc_xor, 6);
+    ArrayList<ArrayList<Integer>> bloc_res = new ArrayList<>();
+    for (ArrayList<Integer> b : blocs) {
+      bloc_res.add(fonction_S(b));
+    }
+    ArrayList<Integer> bloc_res2 = recollage(bloc_res);
+    ArrayList<Integer> bloc_res3 = permutation(DES.P, bloc_res2);
+    return bloc_res3;
+
+  }
+
+  public String cryptage(String message_clair) {
+    this.genereMasterKey();
+    ArrayList<Integer> message_code = this.stringToBits(message_clair);
+    ArrayList<ArrayList<Integer>> blocs = this.decoupage(message_code, 64);
+    ArrayList<Integer> bloc_final = new ArrayList<>();
+    for (ArrayList<Integer> bloc : blocs) {
+      ArrayList<Integer> bloc_perm = this.permutation(DES.perm_initiale, bloc);
+      ArrayList<ArrayList<Integer>> bloc_droit_gauche = this.decoupage(bloc_perm, 32);
+      ArrayList<Integer> bloc_gauche = bloc_droit_gauche.get(0);
+      ArrayList<Integer> bloc_droit = bloc_droit_gauche.get(1);
+      // for (int i = 0; i < DES.nb_ronde; i++) {
+      // DES.rondeActuelle = i;
+      ArrayList<Integer> bloc_gauche_temp = bloc_gauche;
+      bloc_gauche = bloc_droit;
+      bloc_droit = xor(bloc_gauche_temp, fonction_f(bloc_droit));
+      // }
+      bloc_final.removeAll(bloc_final);
+      bloc_final.addAll(bloc_droit);
+      bloc_final.addAll(bloc_gauche);
+    }
+    ArrayList<Integer> bloc_perm_inv = this.permutation(DES.perm_initiale_inv, bloc_final);
+    return this.bitsToString(bloc_perm_inv);
+
+  }
+
   public static void main(String[] args) {
     DES des = new DES();
-    des.genereMasterKey();
-    // System.out.println(DES.masterKey);
-    // String message_clair = "Bonjour les amis c'est tchoupi";
-    // ArrayList<Integer> message_code = des.stringToBits(message_clair);
-    // System.out.println(message_clair);
-    // System.out.println(message_code);
-    // System.out.println(des.bitsToString(message_code));
-    // System.out.println(DES.perm_initiale.length);
+    String message_clair = "Bonjour";
+    String message_code = des.cryptage(message_clair);
+    System.out.println(message_code);
 
   }
 
