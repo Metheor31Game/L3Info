@@ -49,4 +49,16 @@ async function getLibraryMovie(id) {
   }
 }
 
+async function addMovieToLibrary(id) {
+  const reponse = await fetch({
+    url: `/library/${id}`,
+    method: "POST",
+    headers: { "Content-Type": "application/json"},
+    body: JSON.stringify({
+      id:movieId,
+    })
+
+  })
+}
+
 main();

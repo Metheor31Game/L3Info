@@ -108,3 +108,50 @@ let rec jumeaux = function
 [] -> [] |
 [a] -> [] |
 a::b::q -> if a - b = 2 then (a;b)::jumeaux(b::q) else jumeaux(b::q);;
+
+let listeJumeaux = function
+n -> jumeaux(eratos(n));;
+
+
+
+
+
+(* Exercice 8 *)
+
+let rec appartient = function
+n,[] -> false |
+n,a::q -> n = a || appartient(n,q);; 
+
+
+let rec union = function 
+[],q -> q |
+a::l,q -> if appartient(a,q) then union(l,q) else a::union(l,q);; 
+
+let rec intersection = function
+[],[] -> [] |
+[],q -> [] |
+l,[] -> [] |
+a::l,q -> if appartient(a,q) then a::intersection(l,q) else intersection(l,q);;
+
+let inclus = function
+l,q -> intersection(l,q) = l;;
+
+let rec disjoint = function
+[],q -> true |
+l,[] -> true |
+a::l,q -> not (appartient(a,q)) && disjoint(l,q);;
+
+let rec egauxFAUX = function
+[],[] -> true |
+[],q -> false |
+l,[] -> false |
+a::l,b::q -> (appartient(a,b::q) && egaux(l,b::q)) && (appartient(b,a::l) && egaux(a::l,q));;
+
+let egaux = function l,q -> inclus(l,q) && inclus(q,l);;
+
+egaux([1;2;3;4;5;6],[6;5;4;3;2;1]);;
+
+inclus([1;2;3;4;5;6], [1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19]);;
+
+inclus([1;5;4;2;3;6;7;8;9],[6;4;2;5;1;3]);;
+inclus([1;2;3;4;5;6],[1;2;3;4;5;6]);;

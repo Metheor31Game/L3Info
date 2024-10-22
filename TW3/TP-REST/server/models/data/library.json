@@ -18,6 +18,10 @@
     "movieId": "11",
     "rating": 4
   },
+  "12": {
+    "movieId": "12",
+    "rating": 3
+  },
   "15": {
     "movieId": "15",
     "rating": 4
@@ -29,8 +33,5 @@
   "28": {
     "movieId": "28",
     "rating": 3
-  },
-  "30": {
-    "movieId": "30"
   }
 }
