@@ -41,6 +41,8 @@ public class tableaux {
                         17,
                         18, 19, 20, 21, 20, 21, 22, 23, 24, 25, 24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1 };
 
+        static public int[] tab_decalage = { 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
+
         static public int[] S1 = { 14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7,
                         0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8,
                         4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0,
@@ -111,6 +113,10 @@ public class tableaux {
 
         public int[][] getStab() {
                 return new int[][] { S1, S2, S3, S4, S5, S6, S7, S8 };
+        }
+
+        public int[] getTabDecalage() {
+                return tab_decalage;
         }
 
 }

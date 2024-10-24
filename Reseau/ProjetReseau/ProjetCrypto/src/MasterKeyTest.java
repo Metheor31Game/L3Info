@@ -33,14 +33,11 @@ public class MasterKeyTest {
     @Test
     public void testPerm() {
         DES des = new DES();
-        ArrayList<Integer> bloc_perm = new ArrayList<>();
-        Random r = new Random();
-        for (int i = 0; i < 64; i++) {
-            bloc_perm.add(r.nextInt(2));
-        }
-        ArrayList<Integer> bloc_drap = new ArrayList<>();
-        bloc_drap = des.permutation(DES.perm_initiale, bloc_perm);
-        assertEquals(bloc_perm, des.inv_permutation(DES.perm_initiale_inv, bloc_drap));
+        ArrayList<Integer> bloc_perm = new ArrayList<>(Arrays.asList(0, 1, 1, 0, 0, 1, 0, 1));
+        int[] perm = { 2, 1, 4, 3, 6, 5 };
+        ArrayList<Integer> bloc_permute = des.permutation(perm, bloc_perm);
+        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(1, 0, 0, 1, 1, 0));
+        assertEquals(expected, bloc_permute);
 
     }
 
@@ -48,37 +45,37 @@ public class MasterKeyTest {
     public void testDecoupage() {
         DES des = new DES();
 
-        // Bloc original
-        ArrayList<Integer> bloc = new ArrayList<>(Arrays.asList(
-                1, 2, 3, 4, 5, 6, 7, 8,
-                9, 10, 11, 12, 13, 14, 15, 16,
-                17, 18, 19, 20));
-        int taille_sous_bloc = 8;
+        ArrayList<Integer> bloc = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
 
-        // Découpage
-        ArrayList<ArrayList<Integer>> blocs = des.decoupage(bloc, taille_sous_bloc);
+        ArrayList<ArrayList<Integer>> blocs = des.decoupage(bloc, 8);
+        ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
+        expected.add(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8)));
+        expected.add(new ArrayList<>(Arrays.asList(9, 10, 11, 0, 0, 0, 0, 0)));
 
-        // Vérification des sous-blocs
-        assertEquals(3, blocs.size());
-        assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8), blocs.get(0));
-        assertEquals(Arrays.asList(9, 10, 11, 12, 13, 14, 15, 16), blocs.get(1));
-        assertEquals(Arrays.asList(17, 18, 19, 20, 0, 0, 0, 0), blocs.get(2));
+        assertEquals(expected, blocs);
 
-        // Recollage
-        ArrayList<Integer> nouveau_bloc = des.recollage(blocs);
+    }
 
-        // Vérification du bloc recollé
-        assertEquals(bloc, nouveau_bloc);
+    @Test
+    public void testRecollage() {
+        DES des = new DES();
+        ArrayList<ArrayList<Integer>> blocs = new ArrayList<>();
+        blocs.add(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)));
+        blocs.add(new ArrayList<>(Arrays.asList(12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22)));
+        ArrayList<Integer> bloc = des.recollage(blocs);
+        ArrayList<Integer> expected = new ArrayList<>(
+                Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22));
+        assertEquals(expected, bloc);
     }
 
     @Test
     public void testDecallage() {
         DES des = new DES();
         ArrayList<Integer> minicle = new ArrayList<>(Arrays.asList(1, 0, 0, 1));
-        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(0, 0, 1, 1));
+        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(0, 0, 1, 0));
         assertEquals(expected, des.decallage_gauche(minicle, 1));
         minicle = new ArrayList<>(Arrays.asList(0, 1, 1, 1));
-        expected = new ArrayList<>(Arrays.asList(1, 1, 0, 1));
+        expected = new ArrayList<>(Arrays.asList(1, 1, 0, 0));
         assertEquals(expected, des.decallage_gauche(minicle, 2));
 
     }
@@ -117,10 +114,8 @@ public class MasterKeyTest {
 
         // System.out.println(des.fonction_S(bloc));
         // System.out.println(expected);
-
         assertEquals(expected, des.fonction_S(bloc));
 
-        DES.rondeActuelle = 1;
         expected = new ArrayList<>(Arrays.asList(1, 1, 1, 1));
     }
 
@@ -142,6 +137,16 @@ public class MasterKeyTest {
         System.out.println(bloc2);
 
         assertEquals(32, bloc2.size());
+    }
+
+    @Test
+    public void testDES() {
+        DES des = new DES();
+        String message_clair = "Bonjour les amis c'est tchoupi et doudou";
+        ArrayList<Integer> code_crypte = des.crypte(message_clair);
+        String message_decrypte = des.decrypte(code_crypte);
+
+        assertEquals(message_clair, message_decrypte.trim());
     }
 
 }
