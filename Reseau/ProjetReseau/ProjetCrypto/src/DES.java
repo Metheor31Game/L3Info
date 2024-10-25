@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -11,7 +10,7 @@ import java.util.Random;
 public class DES {
   static public int taille_bloc = 64;
   static public int taille_sous_bloc = 32;
-  static public int nb_ronde = 1;
+  static public int nb_ronde = 16;
   static public int rondeActuelle = 0;
   static public int[] tab_decalage;
   static int[] perm_initiale;
@@ -102,8 +101,8 @@ public class DES {
   public ArrayList<Integer> genereMasterKey() {
     DES.masterKey.clear();
     for (int i = 0; i < 64; i++) {
-      //DES.masterKey.add(new Random().nextInt(2));
-      DES.masterKey.add(1);
+      DES.masterKey.add(new Random().nextInt(2));
+      // DES.masterKey.add(1);
     }
     return DES.masterKey;
   }
@@ -364,18 +363,20 @@ public class DES {
       ArrayList<Integer> bloc_perm_inv = this.permutation(DES.perm_initiale_inv, recollage(bloc_droit_gauche_final));
       bloc_final.addAll(bloc_perm_inv);
     }
+
     String resultat = this.bitsToString(bloc_final);
     return resultat;
   }
 
   public static void main(String[] args) {
     DES des = new DES();
-    // des.genereMasterKey();
-    String message_clair = "Salut les amis c'est tchoupi";
-    ArrayList<Integer> message_code = des.crypte(message_clair);
-    String string_code = des.bitsToString(message_code);
-    String message_de_nouveau_clair = des.decrypte(message_code);
-    System.out.println(string_code);
+    String message_clair = "Bonjour les amis c'est tchoupi";
+    ArrayList<Integer> Array_code = des.crypte(message_clair);
+    String message_code = des.bitsToString(Array_code);
+    String message_de_nouveau_clair = des.decrypte(Array_code);
+
+    System.out.println(message_clair);
+    System.out.println(message_code);
     System.out.println(message_de_nouveau_clair);
 
   }

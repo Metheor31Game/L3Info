@@ -54,13 +54,17 @@ public class TripleDES {
         return decrypte3;
     }
 
+    public String bitsToString(ArrayList<Integer> Array_code) {
+        return this.des1.bitsToString(Array_code);
+    }
+
     public static void main(String[] args) {
         TripleDES TDES = new TripleDES();
         String message_clair = "Bonjour les amis c'est tchoupi et doudou";
         ArrayList<Integer> code = TDES.crypte(message_clair);
-        System.out.println(code);
         String message_decrypte = TDES.decrypte(code);
         System.out.println(message_clair);
+        System.out.println(TDES.bitsToString(code));
         System.out.println(message_decrypte);
 
     }
