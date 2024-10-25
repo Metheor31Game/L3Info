@@ -11,7 +11,7 @@ import java.util.Random;
 public class DES {
   static public int taille_bloc = 64;
   static public int taille_sous_bloc = 32;
-  static public int nb_ronde = 16;
+  static public int nb_ronde = 1;
   static public int rondeActuelle = 0;
   static public int[] tab_decalage;
   static int[] perm_initiale;
@@ -102,8 +102,8 @@ public class DES {
   public ArrayList<Integer> genereMasterKey() {
     DES.masterKey.clear();
     for (int i = 0; i < 64; i++) {
-      DES.masterKey.add(new Random().nextInt(2));
-      // DES.masterKey.add(1);
+      //DES.masterKey.add(new Random().nextInt(2));
+      DES.masterKey.add(1);
     }
     return DES.masterKey;
   }
@@ -355,7 +355,7 @@ public class DES {
         DES.rondeActuelle = i;
         ArrayList<Integer> bloc_droit_temp = new ArrayList<>(bloc_droit);
         bloc_droit = bloc_gauche;
-        bloc_gauche = xor(bloc_droit_temp, fonction_f(bloc_droit));
+        bloc_gauche = xor(bloc_droit_temp, fonction_f(bloc_gauche));
       }
 
       ArrayList<ArrayList<Integer>> bloc_droit_gauche_final = new ArrayList<>();
@@ -371,7 +371,7 @@ public class DES {
   public static void main(String[] args) {
     DES des = new DES();
     // des.genereMasterKey();
-    String message_clair = "Bonjour les amis c'est tchoupi et doudou";
+    String message_clair = "Salut les amis c'est tchoupi";
     ArrayList<Integer> message_code = des.crypte(message_clair);
     String string_code = des.bitsToString(message_code);
     String message_de_nouveau_clair = des.decrypte(message_code);

@@ -141,17 +141,21 @@ let rec disjoint = function
 l,[] -> true |
 a::l,q -> not (appartient(a,q)) && disjoint(l,q);;
 
-let rec egauxFAUX = function
-[],[] -> true |
-[],q -> false |
-l,[] -> false |
-a::l,b::q -> (appartient(a,b::q) && egaux(l,b::q)) && (appartient(b,a::l) && egaux(a::l,q));;
-
 let egaux = function l,q -> inclus(l,q) && inclus(q,l);;
 
-egaux([1;2;3;4;5;6],[6;5;4;3;2;1]);;
 
-inclus([1;2;3;4;5;6], [1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19]);;
+let complement = function
+l,q -> if inclus(l,q) then
+  let rec complementrec = function
+  l,[] -> [] |
+  l,a::q -> if appartient(a,l) then complementrec(l,q) else a::complementrec(l,q)
+in complementrec(l,q)
+else [];;
 
-inclus([1;5;4;2;3;6;7;8;9],[6;4;2;5;1;3]);;
-inclus([1;2;3;4;5;6],[1;2;3;4;5;6]);;
+
+let ensemble = function
+l -> 
+  let rec ensemblerec = function 
+    [],q -> q |
+    a::l,q -> if not(appartient(a,q)) then ensemblerec(l,a::q) else ensemblerec(l,q)
+  in ensemblerec(l,[]);; 
