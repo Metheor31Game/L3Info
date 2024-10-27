@@ -20,6 +20,19 @@ public class TripleDES {
         this.des3 = new DES();
     }
 
+    public TripleDES(String masterKey) {
+        // Découpage de la masterKey en 3 parties de 8 caractères
+        String key1 = masterKey.substring(0, 8);
+        String key2 = masterKey.substring(8, 16);
+        String key3 = masterKey.substring(16, 24);
+
+        // Initialisation de chaque instance DES avec une sous-chaîne de 8 caractères
+        this.des1 = new DES(key1);
+        this.des2 = new DES(key2);
+        this.des3 = new DES(key3);
+
+    }
+
     /**
      * Chiffre un message en utilisant le triple chiffrement DES.
      * Le message est chiffré trois fois avec trois clés différentes (DES1 -> DES2
@@ -59,7 +72,7 @@ public class TripleDES {
     }
 
     public static void main(String[] args) {
-        TripleDES TDES = new TripleDES();
+        TripleDES TDES = new TripleDES("azertyuiopqsdfghjklmwxcv");
         String message_clair = "Bonjour les amis c'est tchoupi et doudou";
         ArrayList<Integer> code = TDES.crypte(message_clair);
         String message_decrypte = TDES.decrypte(code);

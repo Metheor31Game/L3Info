@@ -21,7 +21,7 @@ public class MasterKeyTest {
 
         for (int i = 0; i < 10; i++) {
             des.genereMasterKey();
-            cles.add(DES.masterKey);
+            cles.add(des.masterKey);
         }
         for (ArrayList<Integer> cle : cles) {
             assertEquals(64, cle.size());

@@ -27,12 +27,13 @@ public class DES {
 
   static public int[][] Stab;
 
-  static ArrayList<Integer> masterKey;
+  public ArrayList<Integer> masterKey;
   static ArrayList<ArrayList<Integer>> tab_cles;
 
+  // constructeur DES
   public DES() {
     tableaux t = new tableaux();
-    DES.masterKey = new ArrayList<>();
+    this.masterKey = new ArrayList<>();
     DES.tab_cles = new ArrayList<>();
     DES.perm_initiale = t.getPermInitiale();
     DES.perm_initiale_inv = t.getPermInitialeInv();
@@ -43,6 +44,21 @@ public class DES {
     DES.Stab = t.getStab();
     DES.tab_decalage = t.getTabDecalage();
 
+  }
+
+  // Surcharge du constructeur de DES permettant de choisir sa propre masterKey
+  public DES(String MasterKey) {
+    this.masterKey = this.stringToBits(MasterKey);
+    tableaux t = new tableaux();
+    DES.tab_cles = new ArrayList<>();
+    DES.perm_initiale = t.getPermInitiale();
+    DES.perm_initiale_inv = t.getPermInitialeInv();
+    DES.PC1 = t.getPC1();
+    DES.PC2 = t.getPC2();
+    DES.P = t.getP();
+    DES.E = t.getE();
+    DES.Stab = t.getStab();
+    DES.tab_decalage = t.getTabDecalage();
   }
 
   /**
@@ -99,12 +115,12 @@ public class DES {
    * @return la MasterKey sous forme de liste d'entiers
    */
   public ArrayList<Integer> genereMasterKey() {
-    DES.masterKey.clear();
+    this.masterKey.clear();
     for (int i = 0; i < 64; i++) {
-      DES.masterKey.add(new Random().nextInt(2));
+      this.masterKey.add(new Random().nextInt(2));
       // DES.masterKey.add(1);
     }
-    return DES.masterKey;
+    return this.masterKey;
   }
 
   /**
@@ -233,7 +249,7 @@ public class DES {
    * @param n le numéro de la ronde
    */
   public void genereCle(int n) {
-    ArrayList<Integer> cle = DES.masterKey;
+    ArrayList<Integer> cle = this.masterKey;
     ArrayList<Integer> cle_perm = permutation(DES.PC1, cle); // Permutation initiale PC1
     ArrayList<ArrayList<Integer>> blocs = decoupage(cle_perm, 28);
     ArrayList<ArrayList<Integer>> blocs2 = new ArrayList<>();
@@ -300,7 +316,10 @@ public class DES {
    * @return la liste des bits représentant le message chiffré
    */
   public ArrayList<Integer> crypte(String message_clair) {
-    this.genereMasterKey();
+    if (this.masterKey.isEmpty()) {
+      this.genereMasterKey();
+    }
+    System.out.println(this.masterKey);
     ArrayList<Integer> message_code = this.stringToBits(message_clair);
 
     ArrayList<ArrayList<Integer>> blocs = this.decoupage(message_code, 64);
@@ -369,7 +388,7 @@ public class DES {
   }
 
   public static void main(String[] args) {
-    DES des = new DES();
+    DES des = new DES("azertyui");
     String message_clair = "Bonjour les amis c'est tchoupi";
     ArrayList<Integer> Array_code = des.crypte(message_clair);
     String message_code = des.bitsToString(Array_code);
