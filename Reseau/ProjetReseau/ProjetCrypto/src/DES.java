@@ -10,8 +10,8 @@ import java.util.Random;
 public class DES {
   static public int taille_bloc = 64;
   static public int taille_sous_bloc = 32;
-  static public int nb_ronde = 16;
-  static public int rondeActuelle = 0;
+  public int nb_ronde = 16;
+  public int rondeActuelle = 0;
   static public int[] tab_decalage;
   static int[] perm_initiale;
 
@@ -28,13 +28,13 @@ public class DES {
   static public int[][] Stab;
 
   public ArrayList<Integer> masterKey;
-  static ArrayList<ArrayList<Integer>> tab_cles;
+  public ArrayList<ArrayList<Integer>> tab_cles;
 
   // constructeur DES
   public DES() {
     tableaux t = new tableaux();
     this.masterKey = new ArrayList<>();
-    DES.tab_cles = new ArrayList<>();
+    this.tab_cles = new ArrayList<>();
     DES.perm_initiale = t.getPermInitiale();
     DES.perm_initiale_inv = t.getPermInitialeInv();
     DES.PC1 = t.getPC1();
@@ -50,7 +50,7 @@ public class DES {
   public DES(String MasterKey) {
     this.masterKey = this.stringToBits(MasterKey);
     tableaux t = new tableaux();
-    DES.tab_cles = new ArrayList<>();
+    this.tab_cles = new ArrayList<>();
     DES.perm_initiale = t.getPermInitiale();
     DES.perm_initiale_inv = t.getPermInitialeInv();
     DES.PC1 = t.getPC1();
@@ -248,20 +248,40 @@ public class DES {
    * 
    * @param n le numéro de la ronde
    */
-  public void genereCle(int n) {
-    ArrayList<Integer> cle = this.masterKey;
-    ArrayList<Integer> cle_perm = permutation(DES.PC1, cle); // Permutation initiale PC1
-    ArrayList<ArrayList<Integer>> blocs = decoupage(cle_perm, 28);
-    ArrayList<ArrayList<Integer>> blocs2 = new ArrayList<>();
+  // public void genereCle(int n) {
+  // ArrayList<Integer> cle = this.masterKey;
+  // ArrayList<Integer> cle_perm = permutation(DES.PC1, cle); // Permutation
+  // initiale PC1
+  // ArrayList<ArrayList<Integer>> blocs = decoupage(cle_perm, 28);
+  // ArrayList<ArrayList<Integer>> blocs2 = new ArrayList<>();
 
-    // Décalage circulaire des blocs
-    for (ArrayList<Integer> bloc : blocs) {
-      blocs2.add(decallage_gauche(bloc, DES.tab_decalage[n])); // Applique le décalage avec le nombre de crans n
+  // // Décalage circulaire des blocs
+  // for (ArrayList<Integer> bloc : blocs) {
+  // blocs2.add(decallage_gauche(bloc, DES.tab_decalage[n])); // Applique le
+  // décalage avec le nombre de crans n
+  // }
+  // // Recollage et permutation PC2 pour générer la clé ronde
+  // ArrayList<Integer> blocRecolles = recollage(blocs2);
+  // ArrayList<Integer> cle_i = permutation(PC2, blocRecolles);
+  // this.tab_cles.add(cle_i); // Ajoute la clé générée à la liste des clés de
+  // rondes
+  // }
+
+  public void genereCle() {
+    ArrayList<Integer> cle = this.masterKey;
+    ArrayList<Integer> cle_perm = permutation(DES.PC1, cle);
+    ArrayList<ArrayList<Integer>> blocs = decoupage(cle_perm, 28);
+
+    for (int n = 0; n < this.nb_ronde; n++) {
+      ArrayList<ArrayList<Integer>> blocs2 = new ArrayList<>();
+      for (ArrayList<Integer> bloc : blocs) {
+        blocs2.add(decallage_gauche(bloc, DES.tab_decalage[n])); // Applique le décalage avec le nombre de crans n
+      }
+      // Recollage et permutation PC2 pour générer la clé ronde
+      ArrayList<Integer> blocRecolles = recollage(blocs2);
+      ArrayList<Integer> cle_i = permutation(PC2, blocRecolles);
+      this.tab_cles.add(cle_i); // Ajoute la clé générée à la liste des clés de rondes
     }
-    // Recollage et permutation PC2 pour générer la clé ronde
-    ArrayList<Integer> blocRecolles = recollage(blocs2);
-    ArrayList<Integer> cle_i = permutation(PC2, blocRecolles);
-    DES.tab_cles.add(cle_i); // Ajoute la clé générée à la liste des clés de rondes
   }
 
   /**
@@ -279,7 +299,7 @@ public class DES {
 
     int ligne = tableau.get(0) * 2 + tableau.get(5);
     int colonne = tableau.get(1) * 8 + tableau.get(2) * 4 + tableau.get(3) * 2 + tableau.get(4);
-    int valeur = DES.Stab[DES.rondeActuelle % 8][ligne * 16 + colonne];
+    int valeur = DES.Stab[this.rondeActuelle % 8][ligne * 16 + colonne];
     String binary_valeur = String.format("%4s", Integer.toBinaryString(valeur)).replace(' ', '0');
 
     for (int i = 0; i < binary_valeur.length(); i++) {
@@ -297,7 +317,7 @@ public class DES {
    */
   public ArrayList<Integer> fonction_f(ArrayList<Integer> bloc) {
     ArrayList<Integer> bloc_perm = permutation(DES.E, bloc);
-    ArrayList<Integer> bloc_xor = xor(bloc_perm, DES.tab_cles.get(DES.rondeActuelle));
+    ArrayList<Integer> bloc_xor = xor(bloc_perm, this.tab_cles.get(this.rondeActuelle));
     ArrayList<ArrayList<Integer>> blocs = decoupage(bloc_xor, 6);
     ArrayList<ArrayList<Integer>> bloc_res = new ArrayList<>();
     for (ArrayList<Integer> b : blocs) {
@@ -319,7 +339,8 @@ public class DES {
     if (this.masterKey.isEmpty()) {
       this.genereMasterKey();
     }
-    System.out.println(this.masterKey);
+    this.tab_cles = new ArrayList<>();
+    this.genereCle();
     ArrayList<Integer> message_code = this.stringToBits(message_clair);
 
     ArrayList<ArrayList<Integer>> blocs = this.decoupage(message_code, 64);
@@ -332,9 +353,8 @@ public class DES {
       ArrayList<Integer> bloc_droit = bloc_droit_gauche.get(1);
 
       // Boucle pour effectuer le nombre de rondes spécifié par nb_ronde
-      for (int i = 0; i < DES.nb_ronde; i++) {
-        this.genereCle(i);
-        DES.rondeActuelle = i;
+      for (int i = 0; i < this.nb_ronde; i++) {
+        this.rondeActuelle = i;
         ArrayList<Integer> bloc_gauche_temp = new ArrayList<>(bloc_gauche);
         bloc_gauche = bloc_droit;
         bloc_droit = xor(bloc_gauche_temp, fonction_f(bloc_droit));
@@ -357,6 +377,8 @@ public class DES {
    * @return le message déchiffré sous forme de chaîne de caractères
    */
   public String decrypte(ArrayList<Integer> message_bits) {
+    this.tab_cles = new ArrayList<>();
+    this.genereCle();
 
     ArrayList<ArrayList<Integer>> blocs = this.decoupage(message_bits, 64);
     ArrayList<Integer> bloc_final = new ArrayList<>();
@@ -369,8 +391,8 @@ public class DES {
 
       // Boucle pour effectuer le nombre de rondes spécifié par nb_ronde en ordre
       // inverse
-      for (int i = DES.nb_ronde - 1; i >= 0; i--) {
-        DES.rondeActuelle = i;
+      for (int i = this.nb_ronde - 1; i >= 0; i--) {
+        this.rondeActuelle = i;
         ArrayList<Integer> bloc_droit_temp = new ArrayList<>(bloc_droit);
         bloc_droit = bloc_gauche;
         bloc_gauche = xor(bloc_droit_temp, fonction_f(bloc_gauche));
@@ -387,6 +409,7 @@ public class DES {
     return resultat;
   }
 
+  @SuppressWarnings("unused")
   public static void main(String[] args) {
     DES des = new DES("azertyui");
     String message_clair = "Bonjour les amis c'est tchoupi";

@@ -6,7 +6,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.nio.file.Files;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -20,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class TDES_GUI extends JFrame {
     private JButton crypteButton;
@@ -32,7 +36,8 @@ public class TDES_GUI extends JFrame {
     private JTextField motDePasseField;
     private GUIListener guiListener;
     private String masterKey; // Variable pour stocker la clé
-    String fileContent = "";
+    private JTextField motDePasField2;
+    private String fileContent = "";
 
     public TDES_GUI() {
         this.setTitle("Triple DES");
@@ -101,7 +106,7 @@ public class TDES_GUI extends JFrame {
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(Color.black);
         choisirFichierButton = new JButton("Choisir un fichier");
-        choisirFichierButton.addActionListener(e -> selectFile());
+        choisirFichierButton.addActionListener(e -> selectFileAndLoadContent());
         leftPanel.add(choisirFichierButton);
         add(leftPanel, BorderLayout.WEST);
 
@@ -157,29 +162,50 @@ public class TDES_GUI extends JFrame {
     }
 
     private void crypter() {
-        if (this.fileContent == "") {
+        if (this.fileContent.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vous devez choisir un fichier", "Fichier",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
-
         }
-        generateKey();
 
+        if (generateKey()) {
+            TripleDES TDES = new TripleDES(this.masterKey);
+            String fichierCrypte = TDES.bitsToString(TDES.crypte(fileContent));
+
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Enregistrer le fichier chiffré");
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fichier = fileChooser.getSelectedFile();
+
+                // Vérifie et ajoute l'extension .txt si nécessaire
+                if (!fichier.getName().toLowerCase().endsWith(".txt")) {
+                    fichier = new File(fichier.getAbsolutePath() + ".txt");
+                }
+
+                try {
+                    Files.write(fichier.toPath(), fichierCrypte.getBytes());
+                    JOptionPane.showMessageDialog(this, "Fichier chiffré enregistré avec succès.", "Succès",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erreur lors de l'écriture du fichier.", "Erreur",
+                            JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
-    private void selectFile() {
+    private void selectFileAndLoadContent() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
 
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                // Récupérer le fichier sélectionné
                 File selectedFile = fileChooser.getSelectedFile();
-
-                // Lire le contenu du fichier et le stocker dans fileContent
                 fileContent = new String(Files.readAllBytes(selectedFile.toPath()));
-
-                // Afficher une confirmation à l'utilisateur
                 JOptionPane.showMessageDialog(this, "Fichier chargé avec succès.", "Confirmation",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
@@ -190,39 +216,108 @@ public class TDES_GUI extends JFrame {
         }
     }
 
-    // Méthode pour gérer le déchiffrement
     public void decryptage() {
-        System.out.println("Méthode de déchiffrement appelée");
+        System.out.println("Méthode de décryptage appelée");
+
         // Supprimer les anciens composants et configurer le layout
         getContentPane().removeAll();
         setLayout(new BorderLayout());
 
-        // Créer le bouton Menu en haut à gauche
-        menuButton = new JButton("Menu");
-        menuButton.setForeground(Color.white);
-        menuButton.setBackground(Color.black);
+        // Afficher le bouton Menu en haut à gauche
+        afficherBoutonMenu();
 
-        // Ajouter l'ActionListener pour revenir au menu principal
-        menuButton.addActionListener(e -> afficherMenu());
+        // Panneau pour le bouton "Choisir un fichier" à gauche
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftPanel.setBackground(Color.black);
+        choisirFichierButton = new JButton("Choisir un fichier");
+        choisirFichierButton.addActionListener(e -> selectFileAndLoadContent());
+        leftPanel.add(choisirFichierButton);
+        add(leftPanel, BorderLayout.WEST);
 
-        // Ajouter le bouton Menu en haut à gauche
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.black);
-        topPanel.add(menuButton, BorderLayout.WEST);
-        add(topPanel, BorderLayout.NORTH);
+        // Panneau pour entrer la clé ou le mot de passe à droite
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setBackground(Color.LIGHT_GRAY);
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Espacement
+
+        JLabel enterKeyLabel = new JLabel("Entrez votre mot de passe ou votre clé :");
+        motDePasField2 = new JTextField(24);
+        rightPanel.add(enterKeyLabel);
+        rightPanel.add(Box.createVerticalStrut(10)); // Espacement
+        rightPanel.add(motDePasField2);
+
+        // Ajouter le panneau à droite
+        add(rightPanel, BorderLayout.EAST);
+
+        // Ajout du bouton de decryptage
+        cryptButton = new JButton("Decrypter");
+        cryptButton.addActionListener(e -> decrypter());
+        rightPanel.add(Box.createVerticalStrut(20)); // Espacement avant le bouton
+        rightPanel.add(cryptButton);
 
         // Rafraîchir l'interface
         revalidate();
         repaint();
     }
 
+    public void decrypter() {
+        if (this.fileContent.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vous devez choisir un fichier", "Fichier",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if (motDePasField2.getText().length() != 24) {
+            JOptionPane.showMessageDialog(this,
+                    "Le mot de passe doit contenir exactement 24 caractères. Le votre en contient : "
+                            + motDePasField2.getText().length(),
+                    "Erreur",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (generateKey(motDePasField2.getText())) {
+            TripleDES TDES = new TripleDES(this.masterKey);
+            ArrayList<Integer> Array_crypt = TDES.stringToBits(fileContent);
+            String fichier_decrypte = TDES.decrypte(Array_crypt).trim();
+            System.out.println(this.masterKey);
+            System.out.println(fileContent);
+            System.out.println(fichier_decrypte);
+
+            // Demander à l'utilisateur de choisir le chemin et le nom du fichier
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Enregistrer le fichier décrypté");
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+
+                // Vérifier si l'utilisateur a donné une extension
+                String filePath = fileToSave.getAbsolutePath();
+                if (!filePath.endsWith(".txt")) {
+                    filePath += ".txt"; // Ajouter .txt si aucune extension n'est fournie
+                }
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                    writer.write(fichier_decrypte); // Écrire le contenu décrypté dans le fichier
+                    JOptionPane.showMessageDialog(this, "Fichier enregistré avec succès à : " + filePath,
+                            "Succès", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Erreur lors de l'enregistrement du fichier : " + e.getMessage(),
+                            "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+
     // Méthode pour générer la clé en fonction de l'option sélectionnée
-    private void generateKey() {
+    private boolean generateKey() {
         if (choisirMotDePasseRadio.isSelected()) {
             // Utiliser le mot de passe comme clé
             if (motDePasseField.getText().length() == 24) {
                 masterKey = motDePasseField.getText();
                 System.out.println("Clé générée à partir du mot de passe : " + masterKey);
+                return true;
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Le mot de passe doit contenir exactement 24 caractères. Le votre en contient : "
@@ -231,12 +326,20 @@ public class TDES_GUI extends JFrame {
                                         .length(),
                         "Erreur",
                         JOptionPane.ERROR_MESSAGE);
+                return false;
             }
         } else if (cleAleatoireRadio.isSelected()) {
             // Générer une clé aléatoire de 24 caractères
             masterKey = generateRandomKey(24);
             System.out.println("Clé aléatoire générée : " + masterKey);
+            return true;
         }
+        return false;
+    }
+
+    private boolean generateKey(String masterKey) {
+        this.masterKey = masterKey;
+        return true;
     }
 
     // Méthode pour générer une chaîne aléatoire de longueur spécifiée

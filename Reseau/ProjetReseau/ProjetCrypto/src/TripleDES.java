@@ -71,6 +71,11 @@ public class TripleDES {
         return this.des1.bitsToString(Array_code);
     }
 
+    public ArrayList<Integer> stringToBits(String message_code) {
+        return this.des1.stringToBits(message_code);
+    }
+
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         TripleDES TDES = new TripleDES("azertyuiopqsdfghjklmwxcv");
         String message_clair = "Bonjour les amis c'est tchoupi et doudou";

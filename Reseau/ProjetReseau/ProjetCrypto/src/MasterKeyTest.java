@@ -81,7 +81,7 @@ public class MasterKeyTest {
 
     @Test
     public void testXor() {
-        DES des = new DES(); // Assumant que la méthode xor est dans la classe DES
+        DES des = new DES();
 
         ArrayList<Integer> a = new ArrayList<>(Arrays.asList(1, 0, 1, 0));
         ArrayList<Integer> b = new ArrayList<>(Arrays.asList(1, 1, 0, 0));
@@ -96,13 +96,8 @@ public class MasterKeyTest {
     public void testGenereCle() {
         DES des = new DES();
         des.genereMasterKey();
-        for (int i = 0; i < 10; i++) {
-            des.genereCle(i);
-        }
-        // for (int i = 0; i < 10; i++) {
-        // System.out.println(+i + " taille : " + DES.tab_cles.get(i).size() + "" +
-        // DES.tab_cles.get(i));
-        // }
+        des.genereCle();
+        assertEquals(des.nb_ronde, des.tab_cles.size());
     }
 
     @Test
@@ -122,7 +117,7 @@ public class MasterKeyTest {
     public void testFonction_F() {
         DES des = new DES();
         des.genereMasterKey();
-        des.genereCle(1);
+        des.genereCle();
         // Génere moi une arraylist bloc de 32 bits aléatoires
         ArrayList<Integer> bloc = new ArrayList<>();
         Random r = new Random();
