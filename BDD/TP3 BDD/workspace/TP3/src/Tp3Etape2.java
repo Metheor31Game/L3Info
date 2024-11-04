@@ -1,5 +1,7 @@
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,12 +41,12 @@ public class Tp3Etape2 {
 			// on propose à l'utilisateur de choisir entre plusieurs options
 			Scanner scan = new Scanner(System.in);
 			do {
-				System.out.println("Menu\n0=Fin\n1=Lister tous les sports\n2=Ajout d'un sport\n3=liste des sportifs");
+				System.out.println("Menu\n0=Fin\n1=Lister tous les sports\n2=Ajout d'un sport\n3=liste des sportifs\n4=Afficher Toutes les medailles d'or");
 				res = scan.nextInt();
-				if (res<0 || res > 3) {
+				if (res<0 || res > 4) {
 					System.out.println("mauvais choix! Recommencez.");
 				}
-			} while (res<0 || res > 3);
+			} while (res<0 || res > 4);
 			switch (res) {
 
 			// affichage de tous les nomsde sports
@@ -107,7 +109,35 @@ public class Tp3Etape2 {
 				} catch (SQLException c) {
 					System.out.println("Mauvais nom de sport" + c);
 				}
+				break;
+			case 4:
+				try {
+					//Affichier les sportifs qui ont gagné une medaille d'or individuelle ainsi que leur sport
+					ResultSet result = stmt.executeQuery("SELECT SPORTIF.NOM, DISCIPLINE.INTITULE FROM SPORTIF,DISCIPLINE, GAGNER_INDIVIDUEL WHERE SPORTIF.NUM_LICENCE = GAGNER_INDIVIDUEL.NUM_LICENCE AND DISCIPLINE.CODE_DISCIPLINE = GAGNER_INDIVIDUEL.CODE_DISCIPLINE AND GAGNER_INDIVIDUEL.MEDAILLE = 'Or'");
+				
+					while (result.next()) {
+						System.out.println(result.getString(1) + " 4/ discipline : " + result.getString(2));
+					}
+					System.out.println();
 
+				} catch (SQLException c) {
+					System.out.println("Mauvais nom de sport" + c);
+				}
+				break;
+			case 5:
+			try {
+				ResultSet result = stmt.executeQuery("SELECT EQUIPE.NUM_EQUIPE,EQUIPE.DENOMINATION FROME EQUIPE");
+				Map<String,String> dico = new HashMap<>();
+				while (result.next()) {
+					dico.put(result.getString(1), result.getString(2));
+				}
+
+				//TODO On en est a là : il faut afficher toutes les équipes ainsi que leur sportif
+
+			} catch (SQLException c) {
+				System.out.println("Mauvais nom de sport" + c);
+			}
+			
 			}
 		}
 
