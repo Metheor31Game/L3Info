@@ -25,20 +25,27 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
+/*
+ * Affichage de mon application
+ */
 public class TDES_GUI extends JFrame {
     private JButton crypteButton;
     private JButton decrypteButton;
     private JButton menuButton;
     private JButton choisirFichierButton;
-    private JButton cryptButton; // Bouton "Crypter" en bas du bloc gris
+    private JButton cryptButton;
     private JRadioButton choisirMotDePasseRadio;
     private JRadioButton cleAleatoireRadio;
     private JTextField motDePasseField;
     private GUIListener guiListener;
-    private String masterKey; // Variable pour stocker la clé
+    private String masterKey;
     private JTextField motDePasField2;
     private String fileContent = "";
 
+    /**
+     * Constructeur de la classe TDES_GUI.
+     * Initialise la fenêtre principale et affiche le menu.
+     */
     public TDES_GUI() {
         this.setTitle("Triple DES");
         this.setSize(800, 600);
@@ -46,32 +53,28 @@ public class TDES_GUI extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 
-        // Initialise le listener
         guiListener = new GUIListener(this);
 
-        // Affiche les boutons du menu principal
         afficherMenu();
 
         setVisible(true);
     }
 
-    // Méthode pour afficher le menu principal avec les boutons "Crypter" et
-    // "Décrypter"
+    /**
+     * Affiche le menu principal de l'application.
+     */
     public void afficherMenu() {
-        // Supprimer tous les composants existants
+
         getContentPane().removeAll();
 
-        // Créer les boutons
         crypteButton = new JButton("Crypter");
         decrypteButton = new JButton("Décrypter");
 
-        // Configurer les couleurs des boutons
         crypteButton.setForeground(Color.white);
         crypteButton.setBackground(Color.black);
         decrypteButton.setForeground(Color.white);
         decrypteButton.setBackground(Color.black);
 
-        // Utiliser GridBagLayout pour centrer les boutons
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 30, 10);
@@ -82,27 +85,23 @@ public class TDES_GUI extends JFrame {
         gbc.gridy = 1;
         add(decrypteButton, gbc);
 
-        // Ajouter les listeners aux boutons
         crypteButton.addActionListener(guiListener);
         decrypteButton.addActionListener(guiListener);
 
-        // Rafraîchir l'interface
         revalidate();
         repaint();
     }
 
-    // Méthode pour afficher le menu de chiffrement
+    /**
+     * Gère l'interface utilisateur pour le cryptage des fichiers.
+     */
     public void cryptage() {
-        System.out.println("Méthode de cryptage appelée");
 
-        // Supprimer les anciens composants et configurer le layout
         getContentPane().removeAll();
         setLayout(new BorderLayout());
 
-        // Afficher le bouton Menu en haut à gauche
         afficherBoutonMenu();
 
-        // Panneau pour le bouton "Choisir un fichier" à gauche
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(Color.black);
         choisirFichierButton = new JButton("Choisir un fichier");
@@ -110,13 +109,11 @@ public class TDES_GUI extends JFrame {
         leftPanel.add(choisirFichierButton);
         add(leftPanel, BorderLayout.WEST);
 
-        // Panneau pour les options de clé à droite
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setBackground(Color.LIGHT_GRAY);
         rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Espacement
 
-        // Créer les boutons radio pour les options de clé
         choisirMotDePasseRadio = new JRadioButton("Choisir un mot de passe");
         cleAleatoireRadio = new JRadioButton("Clé aléatoire");
         ButtonGroup keyOptionGroup = new ButtonGroup();
@@ -125,42 +122,39 @@ public class TDES_GUI extends JFrame {
         rightPanel.add(choisirMotDePasseRadio);
         rightPanel.add(cleAleatoireRadio);
 
-        // Champ de texte pour entrer le mot de passe de 24 caractères
-        motDePasseField = new JTextField(24); // Limite à 24 caractères
-        motDePasseField.setEnabled(false); // Désactivé par défaut
-        motDePasseField.setVisible(false); // Caché par défaut
+        motDePasseField = new JTextField(24);
+        motDePasseField.setEnabled(false);
+        motDePasseField.setVisible(false);
         motDePasseField.getDocument().addDocumentListener(new PasswordDocumentListener(motDePasseField, 50));
         rightPanel.add(motDePasseField);
 
-        // Ajout des listeners pour activer/désactiver et afficher/cacher le champ de
-        // mot de passe
         choisirMotDePasseRadio.addActionListener(e -> {
             motDePasseField.setEnabled(true);
             motDePasseField.setVisible(true);
-            rightPanel.revalidate(); // Rafraîchit l'affichage du panel
+            rightPanel.revalidate();
             rightPanel.repaint();
         });
         cleAleatoireRadio.addActionListener(e -> {
             motDePasseField.setEnabled(false);
             motDePasseField.setVisible(false);
-            rightPanel.revalidate(); // Rafraîchit l'affichage du panel
+            rightPanel.revalidate();
             rightPanel.repaint();
         });
 
-        // Bouton "Crypter" en bas du bloc gris
         cryptButton = new JButton("Crypter");
         cryptButton.addActionListener(e -> crypter());
-        rightPanel.add(Box.createVerticalStrut(20)); // Espacement avant le bouton
+        rightPanel.add(Box.createVerticalStrut(20));
         rightPanel.add(cryptButton);
 
-        // Ajouter le panneau à droite
         add(rightPanel, BorderLayout.EAST);
 
-        // Rafraîchir l'interface
         revalidate();
         repaint();
     }
 
+    /**
+     * Méthode appelée pour effectuer le cryptage.
+     */
     private void crypter() {
         if (this.fileContent.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vous devez choisir un fichier", "Fichier",
@@ -169,6 +163,7 @@ public class TDES_GUI extends JFrame {
         }
 
         if (generateKey()) {
+            System.out.println(this.masterKey);
             TripleDES TDES = new TripleDES(this.masterKey);
             String fichierCrypte = TDES.bitsToString(TDES.crypte(fileContent));
 
@@ -180,7 +175,6 @@ public class TDES_GUI extends JFrame {
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fichier = fileChooser.getSelectedFile();
 
-                // Vérifie et ajoute l'extension .txt si nécessaire
                 if (!fichier.getName().toLowerCase().endsWith(".txt")) {
                     fichier = new File(fichier.getAbsolutePath() + ".txt");
                 }
@@ -198,6 +192,10 @@ public class TDES_GUI extends JFrame {
         }
     }
 
+    /**
+     * Ouvre un dialogue de sélection de fichier et charge le contenu du fichier
+     * sélectionné.
+     */
     private void selectFileAndLoadContent() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
@@ -216,17 +214,16 @@ public class TDES_GUI extends JFrame {
         }
     }
 
+    /**
+     * Gère l'interface utilisateur pour le décryptage des fichiers.
+     */
     public void decryptage() {
-        System.out.println("Méthode de décryptage appelée");
 
-        // Supprimer les anciens composants et configurer le layout
         getContentPane().removeAll();
         setLayout(new BorderLayout());
 
-        // Afficher le bouton Menu en haut à gauche
         afficherBoutonMenu();
 
-        // Panneau pour le bouton "Choisir un fichier" à gauche
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(Color.black);
         choisirFichierButton = new JButton("Choisir un fichier");
@@ -234,32 +231,31 @@ public class TDES_GUI extends JFrame {
         leftPanel.add(choisirFichierButton);
         add(leftPanel, BorderLayout.WEST);
 
-        // Panneau pour entrer la clé ou le mot de passe à droite
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setBackground(Color.LIGHT_GRAY);
-        rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Espacement
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel enterKeyLabel = new JLabel("Entrez votre mot de passe ou votre clé :");
         motDePasField2 = new JTextField(24);
         rightPanel.add(enterKeyLabel);
-        rightPanel.add(Box.createVerticalStrut(10)); // Espacement
+        rightPanel.add(Box.createVerticalStrut(10));
         rightPanel.add(motDePasField2);
 
-        // Ajouter le panneau à droite
         add(rightPanel, BorderLayout.EAST);
 
-        // Ajout du bouton de decryptage
         cryptButton = new JButton("Decrypter");
         cryptButton.addActionListener(e -> decrypter());
-        rightPanel.add(Box.createVerticalStrut(20)); // Espacement avant le bouton
+        rightPanel.add(Box.createVerticalStrut(20));
         rightPanel.add(cryptButton);
 
-        // Rafraîchir l'interface
         revalidate();
         repaint();
     }
 
+    /**
+     * Méthode appelée pour effectuer le décryptage.
+     */
     public void decrypter() {
         if (this.fileContent.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vous devez choisir un fichier", "Fichier",
@@ -279,11 +275,7 @@ public class TDES_GUI extends JFrame {
             TripleDES TDES = new TripleDES(this.masterKey);
             ArrayList<Integer> Array_crypt = TDES.stringToBits(fileContent);
             String fichier_decrypte = TDES.decrypte(Array_crypt).trim();
-            System.out.println(this.masterKey);
-            System.out.println(fileContent);
-            System.out.println(fichier_decrypte);
 
-            // Demander à l'utilisateur de choisir le chemin et le nom du fichier
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Enregistrer le fichier décrypté");
             int userSelection = fileChooser.showSaveDialog(this);
@@ -291,14 +283,13 @@ public class TDES_GUI extends JFrame {
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
 
-                // Vérifier si l'utilisateur a donné une extension
                 String filePath = fileToSave.getAbsolutePath();
                 if (!filePath.endsWith(".txt")) {
-                    filePath += ".txt"; // Ajouter .txt si aucune extension n'est fournie
+                    filePath += ".txt";
                 }
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                    writer.write(fichier_decrypte); // Écrire le contenu décrypté dans le fichier
+                    writer.write(fichier_decrypte);
                     JOptionPane.showMessageDialog(this, "Fichier enregistré avec succès à : " + filePath,
                             "Succès", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IOException e) {
@@ -310,13 +301,16 @@ public class TDES_GUI extends JFrame {
         }
     }
 
-    // Méthode pour générer la clé en fonction de l'option sélectionnée
+    /**
+     * Génère une clé à partir du mot de passe saisi par l'utilisateur.
+     * 
+     * @return true si la clé a été générée avec succès, false sinon.
+     */
     private boolean generateKey() {
         if (choisirMotDePasseRadio.isSelected()) {
-            // Utiliser le mot de passe comme clé
+
             if (motDePasseField.getText().length() == 24) {
                 masterKey = motDePasseField.getText();
-                System.out.println("Clé générée à partir du mot de passe : " + masterKey);
                 return true;
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -329,20 +323,30 @@ public class TDES_GUI extends JFrame {
                 return false;
             }
         } else if (cleAleatoireRadio.isSelected()) {
-            // Générer une clé aléatoire de 24 caractères
+
             masterKey = generateRandomKey(24);
-            System.out.println("Clé aléatoire générée : " + masterKey);
             return true;
         }
         return false;
     }
 
+    /**
+     * Définit la clé maître à partir du mot de passe fourni.
+     * 
+     * @param masterKey La clé maître à définir.
+     * @return true, car la clé est toujours définie avec succès.
+     */
     private boolean generateKey(String masterKey) {
         this.masterKey = masterKey;
         return true;
     }
 
-    // Méthode pour générer une chaîne aléatoire de longueur spécifiée
+    /**
+     * Génère une clé aléatoire de la longueur spécifiée.
+     * 
+     * @param length La longueur de la clé à générer.
+     * @return La clé aléatoire générée sous forme de chaîne.
+     */
     private String generateRandomKey(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
@@ -353,13 +357,14 @@ public class TDES_GUI extends JFrame {
         return sb.toString();
     }
 
-    // Méthode pour afficher le bouton "Menu" en haut à gauche
+    /**
+     * Affiche le bouton de retour au menu.
+     */
     private void afficherBoutonMenu() {
         menuButton = new JButton("Menu");
         menuButton.setForeground(Color.white);
         menuButton.setBackground(Color.black);
 
-        // Ajouter l'ActionListener pour revenir au menu principal
         menuButton.addActionListener(e -> afficherMenu());
 
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -368,6 +373,11 @@ public class TDES_GUI extends JFrame {
         add(topPanel, BorderLayout.NORTH);
     }
 
+    /**
+     * Méthode principale pour exécuter l'application.
+     * 
+     * @param args Les arguments de la ligne de commande.
+     */
     public static void main(String[] args) {
         new TDES_GUI();
     }

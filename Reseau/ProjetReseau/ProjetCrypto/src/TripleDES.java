@@ -67,10 +67,22 @@ public class TripleDES {
         return decrypte3;
     }
 
+    /**
+     * Convertit un tableau de bits en chaîne de caractères.
+     * 
+     * @param Array_code Le tableau d'entiers représentant les bits à convertir.
+     * @return La chaîne de caractères résultante après conversion.
+     */
     public String bitsToString(ArrayList<Integer> Array_code) {
         return this.des1.bitsToString(Array_code);
     }
 
+    /**
+     * Convertit une chaîne de caractères en un tableau de bits.
+     * 
+     * @param message_code La chaîne de caractères à convertir.
+     * @return Un tableau d'entiers représentant les bits issus de la conversion.
+     */
     public ArrayList<Integer> stringToBits(String message_code) {
         return this.des1.stringToBits(message_code);
     }

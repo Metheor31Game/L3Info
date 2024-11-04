@@ -7,7 +7,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MasterKeyTest {
+public class testDES {
 
     @Before
     public void setup() {
@@ -134,7 +134,7 @@ public class MasterKeyTest {
     }
 
     @Test
-    public void testDES() {
+    public void test() {
         DES des = new DES();
         String message_clair = "Bonjour les amis c'est tchoupi et doudou";
         ArrayList<Integer> code_crypte = des.crypte(message_clair);

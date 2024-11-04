@@ -243,30 +243,8 @@ public class DES {
   }
 
   /**
-   * Génère une sous-clé pour la ronde n en appliquant des permutations et
-   * décalages.
-   * 
-   * @param n le numéro de la ronde
+   * Génère d'avance toutes les clés en fonction de la MasterKey
    */
-  // public void genereCle(int n) {
-  // ArrayList<Integer> cle = this.masterKey;
-  // ArrayList<Integer> cle_perm = permutation(DES.PC1, cle); // Permutation
-  // initiale PC1
-  // ArrayList<ArrayList<Integer>> blocs = decoupage(cle_perm, 28);
-  // ArrayList<ArrayList<Integer>> blocs2 = new ArrayList<>();
-
-  // // Décalage circulaire des blocs
-  // for (ArrayList<Integer> bloc : blocs) {
-  // blocs2.add(decallage_gauche(bloc, DES.tab_decalage[n])); // Applique le
-  // décalage avec le nombre de crans n
-  // }
-  // // Recollage et permutation PC2 pour générer la clé ronde
-  // ArrayList<Integer> blocRecolles = recollage(blocs2);
-  // ArrayList<Integer> cle_i = permutation(PC2, blocRecolles);
-  // this.tab_cles.add(cle_i); // Ajoute la clé générée à la liste des clés de
-  // rondes
-  // }
-
   public void genereCle() {
     ArrayList<Integer> cle = this.masterKey;
     ArrayList<Integer> cle_perm = permutation(DES.PC1, cle);
@@ -389,8 +367,6 @@ public class DES {
       ArrayList<Integer> bloc_gauche = bloc_droit_gauche.get(0);
       ArrayList<Integer> bloc_droit = bloc_droit_gauche.get(1);
 
-      // Boucle pour effectuer le nombre de rondes spécifié par nb_ronde en ordre
-      // inverse
       for (int i = this.nb_ronde - 1; i >= 0; i--) {
         this.rondeActuelle = i;
         ArrayList<Integer> bloc_droit_temp = new ArrayList<>(bloc_droit);

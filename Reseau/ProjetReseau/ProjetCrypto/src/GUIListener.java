@@ -11,20 +11,20 @@ public class GUIListener implements WindowListener, ActionListener {
         this.gui = gui;
     }
 
+    /*
+     * Permet de verifier sur quel bouton on appuie
+     * 
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Vérifie quel bouton a été cliqué
         JButton source = (JButton) e.getSource();
         if (source.getText().equals("Crypter")) {
-            System.out.println("Bouton Chiffrer cliqué");
             gui.cryptage();
         } else if (source.getText().equals("Décrypter")) {
-            System.out.println("Bouton Déchiffrer cliqué");
             gui.decryptage();
         }
     }
 
-    // Méthodes du WindowListener pour gérer les événements de fenêtre
     @Override
     public void windowOpened(WindowEvent e) {
     }
