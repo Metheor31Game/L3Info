@@ -42,6 +42,6 @@ R r , R x ->R (r *. x) |
 R r , N k ->R (r *. float_of_int(k)) |
 N n , R x ->R (float_of_int(n) *. x);;
 
-type sommeRC 
+type nombreRC = R of float | C of float * float;;
 
 
