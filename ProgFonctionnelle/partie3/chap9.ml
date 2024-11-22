@@ -109,3 +109,7 @@ in
   let code2 = {rouge = 0; vert = code.vert; bleu = code.bleu} 
 in boucle(code2);;
 
+
+(* Exercice 3 *)
+
+
