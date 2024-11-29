@@ -17,6 +17,7 @@ let f (a) (b) = a + b + 1 = 0;;
 (* (int -> int) -> bool *)
 
 let f = function a -> a(5)+1 = 0 && true;;
+let fonction2 = function a -> a+1;;
 
 (* int -> bool -> float *)
 
@@ -44,12 +45,70 @@ let f = function a -> function b -> function c -> if c(b(1.) = 2. && a(1) = 1) t
 
 (* Exercice 2 *)
 
-let ilexiste = function v
+let rec ilexiste p list =
+  match list with
+  [] -> false |
+  a::reste -> p(a) || ilexiste p reste;;
+
+ilexiste (function x -> x = 0) ;;
+
+let rec ilexiste = function p -> function list ->
+  match list with
+  [] -> false |
+  a::reste -> p(a) || ilexiste p reste;;
 
 
+  let rec ilexiste = function p -> function 
+    [] -> false |
+    a::reste -> p(a) || ilexiste p reste;;
+;;
+
+let rec qqsoit p list =
+  match list with
+  [] -> false |
+  a::reste -> p(a) && ilexiste p reste;; 
+
+qqsoit (function x -> x = 0) [0;0;0;0;0;0];;
+
+let rec estMembre = function p -> function
+  [] -> false |
+  a::reste -> p = a || estMembre p reste;;
+
+estMembre (5) ([1;2;3;4;5]);;
+
+let estMembre = function x -> function liste -> 
+  ilexiste (function a -> a=x)    liste ;; 
+
+let estInclus = function list -> function list2 ->
+  qqsoit(function x -> estMembre x (list2)) (list);;
 
 
+(*Exercice 2*)
+type expression = Const of int | Var of char |
+  Add of expression*expression |
+  Mult of expression*expression |
+  Puiss of expression*int;;
 
+let expression1 = Add(Const(1),Mult(Const(2),Puiss(Var('x'),3)));;
+let expression2 = Add(Const 1, Puiss(Var 'a', 2));;
+  
+type liaison = {id: char; valeur: int};;
+
+let envC = [{id = 'a'; valeur = 3}; {id = 'b' ;  valeur = 4}];;
+
+let rec evalVar = function 
+  a, [] -> failwith "Indentificateur inconnu" |
+  a, b::reste -> if a = b.id then b.valeur else evalVar (a,reste);;
+
+evalVar('a', envC);;
+evalVar('b', envC);;
+
+let rec puissance = function
+  a,0 -> 1 |
+  a,b when b < 0 -> failwith "négatif" |
+  a,b -> a*puissance(a,b-1) ;;
+
+let rec evalExp = function 
 
 
 
