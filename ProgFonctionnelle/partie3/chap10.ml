@@ -120,11 +120,38 @@ evalExp(envC) (expression1);;
 
 (*Exercice 3*)
 
+type definition = {ident : char ; exp : expression};;
+
+let def1 = {ident = 'x' ; exp = Add(Var('a'), Const(3))};;
 
 
+let envC = [{id = 'a'; valeur = 3}; {id = 'b' ;  valeur = 4}];;
 
 
+let ajoute = function env -> function def -> 
+  {id = def.ident ; valeur = evalExp(env)(def.exp)}::env;;
 
+ajoute(envC) (def1);;
+
+
+type programme = 
+  Elementaire of expression |
+  DefGlob of definition |
+  DefLocale of definition*programme;;
+
+let p = DefLocale ({ident = 'x' ; exp = Const 7},
+DefLocale({ident = 'y' ; exp = Add (Var 'x', Const 3)},
+Elementaire(Add (Var 'x', Mult (Const 3, Var 'y')))));;
+
+let rec evalProg = function 
+  Elementaire prog, env -> evalExp(env)(prog), env |
+  DefGlob prog, env -> evalExp(env)(prog.exp), ajoute(env)(prog) |
+  DefLocale (def,prog), env -> let res, env3 = evalProg(prog, ajoute(env)(def)) in
+                                 res, env;;
+
+evalProg(DefGlob{ident = 'x' ; exp = expression2}, envC);;
+
+evalProg(p, envC);;
 
 
 
