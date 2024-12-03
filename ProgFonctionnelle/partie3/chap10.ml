@@ -94,7 +94,7 @@ let expression2 = Add(Const 1, Puiss(Var 'a', 2));;
   
 type liaison = {id: char; valeur: int};;
 
-let envC = [{id = 'a'; valeur = 3}; {id = 'b' ;  valeur = 4}];;
+let envC = [{id = 'a'; valeur = 3}; {id = 'b' ;  valeur = 4} ;{id = 'x'; valeur = 12}];;
 
 let rec evalVar = function 
   a, [] -> failwith "Indentificateur inconnu" |
@@ -108,7 +108,21 @@ let rec puissance = function
   a,b when b < 0 -> failwith "négatif" |
   a,b -> a*puissance(a,b-1) ;;
 
-let rec evalExp = function 
+let rec evalExp = function env -> function
+  Const n -> n |
+  Var c -> evalVar(c, env) |
+  Add (a,b) -> evalExp(env) (a) + evalExp(env) (b)|
+  Mult (a,b) -> evalExp(env) (a) * evalExp(env) (b)|
+  Puiss (a,b) -> puissance(evalExp(env) (a),b);;
+
+
+evalExp(envC) (expression1);;
+
+(*Exercice 3*)
+
+
+
+
 
 
 
