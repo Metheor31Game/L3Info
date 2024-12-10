@@ -99,3 +99,59 @@ let rec auxParentheses exp pile =
 
 (*Exercice 2*)
 
+
+type file = {debut : int list ; fin : int list};;
+
+exception FileVideErreur;;
+
+let estVide = function
+  f -> f.debut = [] && f.fin = [];;
+
+let rec transvase file =
+  match file.fin with
+  | [] -> {debut = file.debut ; fin = []}
+  | a::b -> {debut = file.debut @ transvase(file).debut ; fin = b};;
+
+let rec premier file = 
+  match file.debut, file.fin with
+  | [], [] -> raise FileVideErreur
+  | a::b, c -> a
+  | [], c -> premier(transvase(file));;
+
+let enfile a file = {debut = file.debut ; fin = a::file.fin};;
+
+let rec queue file =
+  match file.debut, file.fin with
+  | [], [] -> raise FileVideErreur
+  | a::b, c -> {debut = b ; fin = c}
+  | [], c -> queue(transvase(file));;
+
+let egalite f1 f2 = 
+  let f1bis = transvase(f1) in
+    let f2bis = transvase(f2) in
+      f1bis.debut = f2bis.debut;;
+
+let f1 = {debut = [1;3] ; fin = [2;7;4]};;
+let f2 = {debut = [] ; fin = [3;2;1]};;
+let f3 = transvase(f2);;
+
+(* EXERCICE 3*)
+
+type tas = Feuille of int | Noeud of int * tas * tas;;
+
+let t1 = Noeud(25, Noeud(24, Noeud(13, Feuille(5), Feuille(12)), Noeud(17, Feuille(3), Feuille(9))), Noeud(11, Feuille(5), Feuille(1)));;
+
+let valMax t = 
+  match t with
+  | Feuille a -> a
+  | Noeud (a, t1, t2) -> a;;
+
+let rec verif t =
+  match t with
+  | Feuille a -> true
+  | Noeud (a, t1, t2) -> a > valMax(t1) && a > valMax(t2) && verif(t1) && verif(t2);;
+
+
+(*EXERCICE 4*)
+
+
