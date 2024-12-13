@@ -155,3 +155,44 @@ let rec verif t =
 (*EXERCICE 4*)
 
 
+let combien m lettre = m lettre;;
+
+let ajoute lettre m = 
+  let m2 = function
+  l -> if l = lettre then (m lettre)+1 else m l
+in m2;;
+
+let m1 = function
+  'a' -> 2 |
+  'b' -> 1 |
+  'c' -> 3 |
+  _ -> 0;;
+
+let m2 = ajoute 'a' m1;;
+
+
+let max m1 m2 = function c -> if m1(c) > m2(c) then m1(c) else m2(c);;
+
+let rec union m1 m2 = max (m1) (m2);;
+
+
+(*Exercice 5*)
+
+exception OutOfRange;;
+
+
+let v1 c =
+  match c with 
+  | 0 -> 7
+  | 1 -> 4
+  | 2 -> 3
+  | 3 -> 2
+  | _ -> raise OutOfRange;;
+
+let affecte tableau (i,j) =
+  let t2 = function
+    a -> if a = i then j else tableau(a)
+in t2;;
+
+
+let v2 = affecte v1 (4,5);;
